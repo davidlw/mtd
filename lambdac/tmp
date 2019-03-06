@@ -1,0 +1,131 @@
+3,5c3,5
+< // Thu Feb 28 22:43:52 2019 by ROOT version 6.12/07
+< // from TChain PromptD/PromptD
+< // found on file: /eos/cms/store/group/phys_heavyions/MTD/yousen/VertexCompositeAnalysis/PromptD0/D0_PiK_prompt_pt0_y4_5p5TeV_TuneCP5_Pythia8/crab_prompt_d0_ntp_mc_mtd_full_v2/190228_033917/0000/promptd0_mc_mtd_99.root
+---
+> // Tue Mar  5 11:19:32 2019 by ROOT version 6.12/07
+> // from TChain VertexCompositeNtuple/VertexCompositeNtuple
+> // found on file: /eos/cms/store/group/phys_heavyions/MTD/davidlw/LambdaC_PiKP_prompt_pt1_y4_5p5TeV_TuneCP5_Pythia8/crab_prompt_lamc3p_ntp_mc_mtd_v8/190301_120228/0000/lamc3p_mc_mtd_14.root
+8,9c8,9
+< #ifndef PromptD_h
+< #define PromptD_h
+---
+> #ifndef LamC3P_h
+> #define LamC3P_h
+17c17
+< class PromptD {
+---
+> class LamC3P {
+20c20
+<    Int_t           fCurrent; //!current Tree number in a TChain
+---
+>    Int_t           fCurrent; //!current Chain number in a TChain
+77a78,91
+>    Float_t         beta3_PV;
+>    Float_t         beta3_PVerr;
+>    Float_t         tmtd3;
+>    Float_t         sigmatmtd3;
+>    Float_t         pathLength3;
+>    Bool_t          isMtdDau3;
+>    Float_t         zDCASignificanceDaugther3;
+>    Float_t         xyDCASignificanceDaugther3;
+>    Float_t         NHitD3;
+>    Bool_t          HighPurityDaugther3;
+>    Float_t         pTD3;
+>    Float_t         pTerrD3;
+>    Float_t         EtaD3;
+>    Float_t         dedxHarmonic2D3;
+140a155,168
+>    TBranch        *b_beta3_PV;   //!
+>    TBranch        *b_beta3_PVerr;   //!
+>    TBranch        *b_tmtd3;   //!
+>    TBranch        *b_sigmatmtd3;   //!
+>    TBranch        *b_pathLength3;   //!
+>    TBranch        *b_isMtdDau3;   //!
+>    TBranch        *b_zDCASignificanceDaugther3;   //!
+>    TBranch        *b_xyDCASignificanceDaugther3;   //!
+>    TBranch        *b_NHitD3;   //!
+>    TBranch        *b_HighPurityDaugther3;   //!
+>    TBranch        *b_pTD3;   //!
+>    TBranch        *b_pTerrD3;   //!
+>    TBranch        *b_EtaD3;   //!
+>    TBranch        *b_dedxHarmonic2D3;   //!
+150,151c178,179
+<    PromptD(TChain *tree=0);
+<    virtual ~PromptD();
+---
+>    LamC3P(TChain *tree=0);
+>    virtual ~LamC3P();
+163,165c191,193
+< #ifndef PromptD_cxx
+< #define PromptD_cxx
+< PromptD::PromptD(TChain *tree) : fChain(0) 
+---
+> #ifdef LamC3P_cxx
+> #define LamC3P_cxx
+> LamC3P::LamC3P(TChain *tree) : fChain(0) 
+168c196
+< // used to generate this class and read the Tree.
+---
+> // used to generate this class and read the Chain.
+170c198
+<       TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/eos/cms/store/group/phys_heavyions/MTD/yousen/VertexCompositeAnalysis/PromptD0/D0_PiK_prompt_pt0_y4_5p5TeV_TuneCP5_Pythia8/crab_prompt_d0_ntp_mc_mtd_full_v2/190228_033917/0000/promptd0_mc_mtd_99.root");
+---
+>       TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/eos/cms/store/group/phys_heavyions/MTD/davidlw/LambdaC_PiKP_prompt_pt1_y4_5p5TeV_TuneCP5_Pythia8/crab_prompt_lamc3p_ntp_mc_mtd_v8/190301_120228/0000/lamc3p_mc_mtd_14.root");
+172c200
+<          f = new TFile("/eos/cms/store/group/phys_heavyions/MTD/yousen/VertexCompositeAnalysis/PromptD0/D0_PiK_prompt_pt0_y4_5p5TeV_TuneCP5_Pythia8/crab_prompt_d0_ntp_mc_mtd_full_v2/190228_033917/0000/promptd0_mc_mtd_99.root");
+---
+>          f = new TFile("/eos/cms/store/group/phys_heavyions/MTD/davidlw/LambdaC_PiKP_prompt_pt1_y4_5p5TeV_TuneCP5_Pythia8/crab_prompt_lamc3p_ntp_mc_mtd_v8/190301_120228/0000/lamc3p_mc_mtd_14.root");
+174,175c202,203
+<       TDirectory * dir = (TDirectory*)f->Get("/eos/cms/store/group/phys_heavyions/MTD/yousen/VertexCompositeAnalysis/PromptD0/D0_PiK_prompt_pt0_y4_5p5TeV_TuneCP5_Pythia8/crab_prompt_d0_ntp_mc_mtd_full_v2/190228_033917/0000/promptd0_mc_mtd_99.root:/d0ana_mc");
+<       dir->GetObject("PromptD",tree);
+---
+>       TDirectory * dir = (TDirectory*)f->Get("/eos/cms/store/group/phys_heavyions/MTD/davidlw/LambdaC_PiKP_prompt_pt1_y4_5p5TeV_TuneCP5_Pythia8/crab_prompt_lamc3p_ntp_mc_mtd_v8/190301_120228/0000/lamc3p_mc_mtd_14.root:/lamc3pana_mc");
+>       dir->GetObject("VertexCompositeNtuple",tree);
+181c209
+< PromptD::~PromptD()
+---
+> LamC3P::~LamC3P()
+187c215
+< Int_t PromptD::GetEntry(Long64_t entry)
+---
+> Int_t LamC3P::GetEntry(Long64_t entry)
+193c221
+< Long64_t PromptD::LoadTree(Long64_t entry)
+---
+> Long64_t LamC3P::LoadTree(Long64_t entry)
+206c234
+< void PromptD::Init(TChain *tree)
+---
+> void LamC3P::Init(TChain *tree)
+274a303,316
+>    fChain->SetBranchAddress("beta3_PV", &beta3_PV, &b_beta3_PV);
+>    fChain->SetBranchAddress("beta3_PVerr", &beta3_PVerr, &b_beta3_PVerr);
+>    fChain->SetBranchAddress("tmtd3", &tmtd3, &b_tmtd3);
+>    fChain->SetBranchAddress("sigmatmtd3", &sigmatmtd3, &b_sigmatmtd3);
+>    fChain->SetBranchAddress("pathLength3", &pathLength3, &b_pathLength3);
+>    fChain->SetBranchAddress("isMtdDau3", &isMtdDau3, &b_isMtdDau3);
+>    fChain->SetBranchAddress("zDCASignificanceDaugther3", &zDCASignificanceDaugther3, &b_zDCASignificanceDaugther3);
+>    fChain->SetBranchAddress("xyDCASignificanceDaugther3", &xyDCASignificanceDaugther3, &b_xyDCASignificanceDaugther3);
+>    fChain->SetBranchAddress("NHitD3", &NHitD3, &b_NHitD3);
+>    fChain->SetBranchAddress("HighPurityDaugther3", &HighPurityDaugther3, &b_HighPurityDaugther3);
+>    fChain->SetBranchAddress("pTD3", &pTD3, &b_pTD3);
+>    fChain->SetBranchAddress("pTerrD3", &pTerrD3, &b_pTerrD3);
+>    fChain->SetBranchAddress("EtaD3", &EtaD3, &b_EtaD3);
+>    fChain->SetBranchAddress("dedxHarmonic2D3", &dedxHarmonic2D3, &b_dedxHarmonic2D3);
+286c328
+< Bool_t PromptD::Notify()
+---
+> Bool_t LamC3P::Notify()
+297c339
+< void PromptD::Show(Long64_t entry)
+---
+> void LamC3P::Show(Long64_t entry)
+304c346
+< Int_t PromptD::Cut(Long64_t entry)
+---
+> Int_t LamC3P::Cut(Long64_t entry)
+311c353
+< #endif // #ifndef PromptD_cxx
+---
+> #endif // #ifndef LamC3P_cxx
