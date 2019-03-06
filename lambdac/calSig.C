@@ -34,7 +34,7 @@ void calSig(double minPt=2.0, double maxPt=3.0)
 
    // try to scale gen spectrum
    double yield_mc_Pt2_3GeV = hGenAllPt->Integral(20, 30);
-   double yield_data_Pt2_3GeV = hData->GetBinContent(1) * ana::TAA0_100 * ana::pbOvermb * 1 *ana::GeV * ana::evts_sim_MB * ana::BR * 2; // 2 is because of the data is for (D+Dbar)/2
+   double yield_data_Pt2_3GeV = hData->GetBinContent(1) * ana::TAA0_100 * ana::pbOvermb * 1 *ana::GeV * ana::evts_data_MB * ana::BR * 2; // 2 is because of the data is for (D+Dbar)/2
    double scale_factor = yield_data_Pt2_3GeV / yield_mc_Pt2_3GeV;
    std::cout << scale_factor << std::endl;
 
