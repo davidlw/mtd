@@ -30,7 +30,7 @@ void setPalette()
    gStyle->SetNumberContours(NCont);
 }
 
-void invBetaPlot()
+void invBetaPlotBTL()
 {
    bool draw = true;
    bool draw2D = false;
@@ -48,8 +48,10 @@ void invBetaPlot()
    TH2F* hdInvBetaKaonVsPDau1Dbar = new TH2F("hdInvBetaKaonVsPDau1Dbar", "hdInvBetaKaonVsPDau1Dbar", 100, 0, 10, 1000, -0.1, 0.1);
    TH2F* hdInvBetaPionVsPDau2Dbar = new TH2F("hdInvBetaPionVsPDau2Dbar", "hdInvBetaPionVsPDau2Dbar", 100, 0, 10, 1000, -0.1, 0.1);
 
-   TH2F* hdInvBetaPionVsP = new TH2F("hdInvBetaPionVsP", "hdInvBetaPionVsP", 50, 0, 10, 1000, -0.1, 0.1);
-   TH2F* hdInvBetaKaonVsP = new TH2F("hdInvBetaKaonVsP", "hdInvBetaKaonVsP", 50, 0, 10, 1000, -0.1, 0.1);
+   TH2F* hdInvBetaPionVsPBTL = new TH2F("hdInvBetaPionVsPBTL", "hdInvBetaPionVsPBTL", 50, 0, 10, 1000, -0.1, 0.1);
+   TH2F* hdInvBetaKaonVsPBTL = new TH2F("hdInvBetaKaonVsPBTL", "hdInvBetaKaonVsPBTL", 50, 0, 10, 1000, -0.1, 0.1);
+   TH2F* hdInvBetaPionVsPBTLDraw = new TH2F("hdInvBetaPionVsPBTLDraw", "hdInvBetaPionVsPBTL", 1000, 0, 10, 1000, -0.1, 0.1);
+   TH2F* hdInvBetaKaonVsPBTLDraw = new TH2F("hdInvBetaKaonVsPBTLDraw", "hdInvBetaKaonVsPBTL", 1000, 0, 10, 1000, -0.1, 0.1);
 
    for(Long64_t ientry=0; ientry<t->GetEntries(); ientry++){
       t->GetEntry(ientry);
@@ -57,22 +59,28 @@ void invBetaPlot()
 
       const float pD1 = t->pTD1 * std::cosh(t->EtaD1);
       const float pD2 = t->pTD2 * std::cosh(t->EtaD2);
-      //if(t->pT>0.5) continue;
+
+      if(fabs(t->EtaD1)>1.5) continue;
+      if(fabs(t->EtaD2)>1.5) continue;
 
       // require eta<1.4 ? pT > 0.8 : p > 0.7
       if(fabs(t->EtaD1) < 1.4 ? t->pTD1 <= 0.7 : pD1 <= 0.7) continue;
       if(fabs(t->EtaD2) < 1.4 ? t->pTD2 <= 0.7 : pD2 <= 0.7) continue;
 
-      if(t->flavor == 1 && t->isGoodMtdDau1) hdInvBetaPionVsPDau1D->Fill(pD1, 1./t->beta1_PV - invBetaPion(pD1));
-      if(t->flavor == 1 && t->isGoodMtdDau2) hdInvBetaKaonVsPDau2D->Fill(pD2, 1./t->beta2_PV - invBetaKaon(pD2));
-      if(t->flavor == -1 && t->isGoodMtdDau1) hdInvBetaKaonVsPDau1Dbar->Fill(pD1, 1./t->beta1_PV - invBetaKaon(pD1));
-      if(t->flavor == -1 && t->isGoodMtdDau2) hdInvBetaPionVsPDau2Dbar->Fill(pD2, 1./t->beta2_PV - invBetaPion(pD2));
+      if(t->flavor == 1 && t->isMtdDau1) hdInvBetaPionVsPDau1D->Fill(pD1, 1./t->beta1_PV - invBetaPion(pD1));
+      if(t->flavor == 1 && t->isMtdDau2) hdInvBetaKaonVsPDau2D->Fill(pD2, 1./t->beta2_PV - invBetaKaon(pD2));
+      if(t->flavor == -1 && t->isMtdDau1) hdInvBetaKaonVsPDau1Dbar->Fill(pD1, 1./t->beta1_PV - invBetaKaon(pD1));
+      if(t->flavor == -1 && t->isMtdDau2) hdInvBetaPionVsPDau2Dbar->Fill(pD2, 1./t->beta2_PV - invBetaPion(pD2));
 
-      if(t->flavor == 1 && t->isGoodMtdDau1) hdInvBetaPionVsP->Fill(pD1, 1./t->beta1_PV - invBetaPion(pD1));
-      if(t->flavor == -1 && t->isGoodMtdDau2) hdInvBetaPionVsP->Fill(pD2, 1./t->beta2_PV - invBetaPion(pD2));
+      if(t->flavor == 1 && t->isMtdDau1) hdInvBetaPionVsPBTL->Fill(pD1, 1./t->beta1_PV - invBetaPion(pD1));
+      if(t->flavor == -1 && t->isMtdDau2) hdInvBetaPionVsPBTL->Fill(pD2, 1./t->beta2_PV - invBetaPion(pD2));
+      if(t->flavor == 1 && t->isMtdDau1) hdInvBetaPionVsPBTLDraw->Fill(pD1, 1./t->beta1_PV - invBetaPion(pD1));
+      if(t->flavor == -1 && t->isMtdDau2) hdInvBetaPionVsPBTLDraw->Fill(pD2, 1./t->beta2_PV - invBetaPion(pD2));
 
-      if(t->flavor == -1 && t->isGoodMtdDau1) hdInvBetaKaonVsP->Fill(pD1, 1./t->beta1_PV - invBetaKaon(pD1));
-      if(t->flavor == 1 && t->isGoodMtdDau2) hdInvBetaKaonVsP->Fill(pD2, 1./t->beta2_PV - invBetaKaon(pD2));
+      if(t->flavor == -1 && t->isMtdDau1) hdInvBetaKaonVsPBTL->Fill(pD1, 1./t->beta1_PV - invBetaKaon(pD1));
+      if(t->flavor == 1 && t->isMtdDau2) hdInvBetaKaonVsPBTL->Fill(pD2, 1./t->beta2_PV - invBetaKaon(pD2));
+      if(t->flavor == -1 && t->isMtdDau1) hdInvBetaKaonVsPBTLDraw->Fill(pD1, 1./t->beta1_PV - invBetaKaon(pD1));
+      if(t->flavor == 1 && t->isMtdDau2) hdInvBetaKaonVsPBTLDraw->Fill(pD2, 1./t->beta2_PV - invBetaKaon(pD2));
    }
    if(draw){
       setPalette();
@@ -125,33 +133,38 @@ void invBetaPlot()
       hdInvBetaDau2Dbar->Fit("gaus");
    }
    if(draw && profile){
+      TLatex* ltx = new TLatex();
       c[0]->cd();
-      TProfile* hdInvBetaPion = hdInvBetaPionVsP->ProfileX("Pion", 1, -1, "i");
+      TProfile* hdInvBetaPion = hdInvBetaPionVsPBTL->ProfileX("Pion", 1, -1, "i");
       hdInvBetaPion->GetYaxis()->SetRangeUser(-0.001, 0.001);
       hdInvBetaPion->GetYaxis()->SetTitle("Mean of 1/beta - 1/beta_{#pi}");
       hdInvBetaPion->GetXaxis()->SetTitle("p (GeV)");
       hdInvBetaPion->Draw();
+      ltx->DrawLatexNDC(0.72, 0.65, "| #eta | < 1.5");
 
       c[1]->cd();
-      TProfile* hdInvBetaPionstd = hdInvBetaPionVsP->ProfileX("Pionstd", 1, -1, "s");
+      TProfile* hdInvBetaPionstd = hdInvBetaPionVsPBTL->ProfileX("Pionstd", 1, -1, "s");
       hdInvBetaPionstd->GetYaxis()->SetRangeUser(-0.03, 0.03);
       hdInvBetaPionstd->GetYaxis()->SetTitle("Mean of 1/beta - 1/beta_{#pi}");
       hdInvBetaPionstd->GetXaxis()->SetTitle("p (GeV)");
       hdInvBetaPionstd->Draw();
+      ltx->DrawLatexNDC(0.72, 0.65, "| #eta | < 1.5");
 
       c[2]->cd();
-      TProfile* hdInvBetaKaon = hdInvBetaKaonVsP->ProfileX("Kion", 1, -1, "i");
+      TProfile* hdInvBetaKaon = hdInvBetaKaonVsPBTL->ProfileX("Kion", 1, -1, "i");
       hdInvBetaKaon->GetYaxis()->SetRangeUser(-0.001, 0.001);
       hdInvBetaKaon->GetYaxis()->SetTitle("Mean of 1/beta - 1/beta_{K}");
       hdInvBetaKaon->GetXaxis()->SetTitle("p (GeV)");
       hdInvBetaKaon->Draw();
+      ltx->DrawLatexNDC(0.72, 0.65, "| #eta | < 1.5");
 
       c[3]->cd();
-      TProfile* hdInvBetaKaonstd = hdInvBetaKaonVsP->ProfileX("Kionstd", 1, -1, "s");
+      TProfile* hdInvBetaKaonstd = hdInvBetaKaonVsPBTL->ProfileX("Kionstd", 1, -1, "s");
       hdInvBetaKaonstd->GetYaxis()->SetRangeUser(-0.03, 0.03);
       hdInvBetaKaonstd->GetYaxis()->SetTitle("Mean of 1/beta - 1/beta_{K}");
       hdInvBetaKaonstd->GetXaxis()->SetTitle("p (GeV)");
       hdInvBetaKaonstd->Draw();
+      ltx->DrawLatexNDC(0.72, 0.65, "| #eta | < 1.5");
 
       TGraph* gPion = new TGraph(50);
       TGraph* gKaon = new TGraph(50);
@@ -164,11 +177,12 @@ void invBetaPlot()
          gKaon->SetPoint(i, hdInvBetaKaonstd->GetBinCenter(i+1), hdInvBetaKaonstd->GetBinError(i+1));
       }
 
-      TF1* fExpPion = new TF1("fExpPion_dInvBetaRMS", "[0]+[1]*exp(-[2]*x)", 0.7, 10);
-      TF1* fPoly2Pion = new TF1("fPoly2Pion_dInvBetaRMS", "[0]+[1]*x +[2]*x*x", 0.7, 10);
+      TF1* fExpPion = new TF1("fExpPion_dInvBetaRMS", "[0]+[1]*exp(-[2]*x)", 0.8, 10);
+      TF1* fPoly2Pion = new TF1("fPoly2Pion_dInvBetaRMS", "[0]+[1]*x +[2]*x*x", 0.8, 10);
 
-      fExpPion->SetParameters(0.005, 0.016, 0.36);
-      fPoly2Pion->SetParameters(0.0185, -0.003, 0.00017);
+      fExpPion->SetParameters(0.003, 0.006, 0.11);
+      fPoly2Pion->SetParameters(0.00977323, 0.000449226, -0.00017);
+      fPoly2Pion->FixParameter(1, 0);
       fPoly2Pion->SetLineColor(kBlue);
       gPion->Fit(fExpPion, "Q R", "", 0.8, 10);
       gPion->Fit(fExpPion, "Q R", "", 0.8, 10);
@@ -205,21 +219,23 @@ void invBetaPlot()
       latex->DrawLatexNDC(0.55, 0.69, Form("poly2: p0=%.3e", fPoly2Pion->GetParameter(0)));
       latex->DrawLatexNDC(0.55, 0.62, Form("poly2: p1=%.3e", fPoly2Pion->GetParameter(1)));
       latex->DrawLatexNDC(0.55, 0.55, Form("poly2: p2=%.3e", fPoly2Pion->GetParameter(2)));
+      ltx->DrawLatexNDC(0.72, 0.65, "| #eta | < 1.5");
 
       TF1* fExpKaon = new TF1("fExpKaon_dInvBetaRMS", "[0]+[1]*exp(-[2]*x)", 0.8, 10);
       TF1* fPoly2Kaon = new TF1("fPoly2Kaon_dInvBetaRMS", "[0]+[1]*x + [2]*x*x", 0.8, 10);
 
       fExpKaon->SetParameters(0.005, 0.016, 0.36);
-      fPoly2Kaon->SetParameters(0.0185, -0.003, 0.00017);
+      fPoly2Kaon->SetParameters(0.014, 0.0, 0.0001);
+      fPoly2Kaon->FixParameter(1, 0);
       fPoly2Kaon->SetLineColor(kBlue);
-      gKaon->Fit(fExpKaon, "Q", "", 0.8, 10);
-      gKaon->Fit(fExpKaon, "Q", "", 0.8, 10);
-      gKaon->Fit(fExpKaon, "Q", "", 0.8, 10);
-      gKaon->Fit(fExpKaon, "", "", 0.8, 10);
-      gKaon->Fit(fPoly2Kaon, "Q", "", 0.8, 10);
-      gKaon->Fit(fPoly2Kaon, "Q", "", 0.8, 10);
-      gKaon->Fit(fPoly2Kaon, "Q", "", 0.8, 10);
-      gKaon->Fit(fPoly2Kaon, "", "", 0.8, 10);
+      gKaon->Fit(fExpKaon, "Q R", "", 0.8, 10);
+      gKaon->Fit(fExpKaon, "Q R", "", 0.8, 10);
+      gKaon->Fit(fExpKaon, "Q R", "", 0.8, 10);
+      gKaon->Fit(fExpKaon, "R", "", 0.8, 10);
+      gKaon->Fit(fPoly2Kaon, "Q R", "", 0.8, 10);
+      gKaon->Fit(fPoly2Kaon, "Q R", "", 0.8, 10);
+      gKaon->Fit(fPoly2Kaon, "Q R", "", 0.8, 10);
+      gKaon->Fit(fPoly2Kaon, "R", "", 0.8, 10);
       c[2]->cd();
       gStyle->SetOptStat(0);
       //gStyle->SetOptFit(1);
@@ -246,6 +262,7 @@ void invBetaPlot()
       latex->DrawLatexNDC(0.55, 0.69, Form("poly2: p0=%.3e", fPoly2Kaon->GetParameter(0)));
       latex->DrawLatexNDC(0.55, 0.62, Form("poly2: p1=%.3e", fPoly2Kaon->GetParameter(1)));
       latex->DrawLatexNDC(0.55, 0.55, Form("poly2: p2=%.3e", fPoly2Kaon->GetParameter(2)));
+      ltx->DrawLatexNDC(0.72, 0.65, "| #eta | < 1.5");
 
       TFile fFunc("fFuncDInvBeta.root", "recreate");
 
@@ -254,42 +271,43 @@ void invBetaPlot()
       fPoly2Pion->Write();
       fPoly2Kaon->Write();
 
-      TLatex* ltx = new TLatex();
       TCanvas* c1 = new TCanvas("cPion", "cPion", 575, 500);
       c1->SetLogz();
       c1->SetLeftMargin(0.16);
       c1->SetRightMargin(0.1);
       gStyle->SetOptStat(0);
-	   hdInvBetaPionVsP->GetXaxis()->SetTitle("p (GeV)");
-	   hdInvBetaPionVsP->GetYaxis()->SetTitle("1/#beta - 1/#beta_{#pi}");
-	   hdInvBetaPionVsP->SetMinimum(1.0);
-      hdInvBetaPionVsP->SetTitle("");
-	   hdInvBetaPionVsP->Draw("COLZ");
+	   hdInvBetaPionVsPBTLDraw->GetXaxis()->SetTitle("p (GeV)");
+	   hdInvBetaPionVsPBTLDraw->GetYaxis()->SetTitle("1/#beta - 1/#beta_{#pi}");
+	   hdInvBetaPionVsPBTLDraw->SetMinimum(1.0);
+      hdInvBetaPionVsPBTLDraw->SetTitle("");
+	   hdInvBetaPionVsPBTLDraw->Draw("COLZ");
       ltx->SetTextSize(0.05);
       ltx->DrawLatexNDC(0.3, 0.93, "Phase II Simulation #sqrt{s} = 5.5 TeV");
       ltx->DrawLatexNDC(0.75, 0.85, "CMS");
       ltx->SetTextSize(0.035);
       ltx->DrawLatexNDC(0.72, 0.8, "Preliminary");
       ltx->DrawLatexNDC(0.72, 0.74, "D -> K + #pi");
+      ltx->DrawLatexNDC(0.72, 0.65, "| #eta | < 1.5");
 
       TCanvas* c2 = new TCanvas("cKaon", "cKaon", 575, 500);
       c2->SetLogz();
       c2->SetLeftMargin(0.16);
       c2->SetRightMargin(0.1);
       gStyle->SetOptStat(0);
-	   hdInvBetaKaonVsP->GetXaxis()->SetTitle("p (GeV)");
-	   hdInvBetaKaonVsP->GetYaxis()->SetTitle("1/#beta - 1/#beta_{K}");
-	   hdInvBetaKaonVsP->SetMinimum(1.0);
-      hdInvBetaKaonVsP->SetTitle("");
-	   hdInvBetaKaonVsP->Draw("COLZ");
+	   hdInvBetaKaonVsPBTLDraw->GetXaxis()->SetTitle("p (GeV)");
+	   hdInvBetaKaonVsPBTLDraw->GetYaxis()->SetTitle("1/#beta - 1/#beta_{K}");
+	   hdInvBetaKaonVsPBTLDraw->SetMinimum(1.0);
+      hdInvBetaKaonVsPBTLDraw->SetTitle("");
+	   hdInvBetaKaonVsPBTLDraw->Draw("COLZ");
       ltx->SetTextSize(0.05);
       ltx->DrawLatexNDC(0.3, 0.93, "Phase II Simulation #sqrt{s} = 5.5 TeV");
       ltx->DrawLatexNDC(0.75, 0.85, "CMS");
       ltx->SetTextSize(0.035);
       ltx->DrawLatexNDC(0.72, 0.8, "Preliminary");
       ltx->DrawLatexNDC(0.72, 0.74, "D -> K + #pi");
+      ltx->DrawLatexNDC(0.72, 0.65, "| #eta | < 1.5");
 
-      std::cout << hdInvBetaPionVsP->ProjectionY("pion", 0, 12)->Integral(420, 580)/ hdInvBetaPionVsP->ProjectionY("pion", 0, 12)->Integral(0, 100000)<< std::endl;
-      std::cout << hdInvBetaKaonVsP->ProjectionY("kaon", 0, 12)->Integral(420, 580)/ hdInvBetaKaonVsP->ProjectionY("kaon", 0, 12)->Integral(0, 100000)<< std::endl;
+      std::cout << hdInvBetaPionVsPBTL->ProjectionY("pion", 0, 12)->Integral(420, 580)/ hdInvBetaPionVsPBTL->ProjectionY("pion", 0, 12)->Integral(0, 100000)<< std::endl;
+      std::cout << hdInvBetaKaonVsPBTL->ProjectionY("kaon", 0, 12)->Integral(420, 580)/ hdInvBetaKaonVsPBTL->ProjectionY("kaon", 0, 12)->Integral(0, 100000)<< std::endl;
    }
 }

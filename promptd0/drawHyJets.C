@@ -13,7 +13,8 @@ void setPalette()
 
 void drawHyJets()
 {
-   TFile *f1 = new TFile("hists.root");
+   TFile *f1 = new TFile("hists_reRECO.root");
+   //TFile *f1 = new TFile("hists.root");
    TH1F* hD0Pt, * hD0Pt3sigma, *hD0Pt2sigma, *hD0Pt1sigma;
    TH1F* hPionEff, * hPion3sigmaEff, *hPion2sigmaEff, *hPion1sigmaEff;
    TH1F* hKaonEff, * hKaon3sigmaEff, *hKaon2sigmaEff, *hKaon1sigmaEff;
@@ -57,10 +58,10 @@ void drawHyJets()
 	f1->GetObject("hKaon2sigmaEffCent",hKaon2sigmaEffCent);
 	f1->GetObject("hKaon1sigmaEffCent",hKaon1sigmaEffCent);
 
-   bool drawDau = true;
-   bool drawD0 = true;
-   bool drawDauCent = true;
-   bool drawD0Cent = true;
+   bool drawDau = false;
+   bool drawD0 = false;
+   bool drawDauCent = false;
+   bool drawD0Cent = false;
 
    setPalette();
 
@@ -116,12 +117,12 @@ void drawHyJets()
       latex->DrawLatexNDC(0.6, 0.5, "MB events");
    }
    if(drawD0){
-   	TCanvas* c1 = new TCanvas("hD0pT", "", 450, 450);
+   	TCanvas* c1 = new TCanvas("hD0pT", "", 550, 450);
       c1->SetLeftMargin(0.16);
       gStyle->SetOptStat(0);
 
       TH1F* hDraw = new TH1F("hDrawD0", "", 100, 0, 10);
-      hDraw->GetYaxis()->SetRangeUser(0, 1.3);
+      hDraw->GetYaxis()->SetRangeUser(0, 1.1);
       hDraw->GetYaxis()->SetTitle("D0 yield eff");
       hDraw->GetXaxis()->SetTitle("pT (GeV)");
       hDraw->Draw();
@@ -144,9 +145,10 @@ void drawHyJets()
       hD0Pt1sigma->Draw("same");
 
       TLatex* latex = new TLatex();
+      latex->DrawLatexNDC(0.3, 0.93, "Phase II Simulation #sqrt{s} = 5.5 TeV");
       latex->SetTextSize(0.036);
-      latex->DrawLatexNDC(0.6, 0.4, "-3 < D^{0} Rapidity < 3");
-      latex->DrawLatexNDC(0.6, 0.5, "MB events");
+      latex->DrawLatexNDC(0.6, 0.28, "-3 < D^{0} Rapidity < 3");
+      latex->DrawLatexNDC(0.6, 0.2, "MB events");
 
       TLegend *legend = new TLegend(0.7, 0.8, 0.9, 0.9);
       legend->AddEntry(hD0Pt3sigma, "3 RMS", "l");
@@ -223,12 +225,12 @@ void drawHyJets()
       latex->DrawLatexNDC(0.6, 0.5, "central events");
    }
    if(drawD0Cent){
-   	TCanvas* c1 = new TCanvas("hD0pTCent", "", 450, 450);
+   	TCanvas* c1 = new TCanvas("hD0pTCent", "", 550, 450);
       c1->SetLeftMargin(0.16);
       gStyle->SetOptStat(0);
 
       TH1F* hDraw = new TH1F("hDrawD0Cent", "", 100, 0, 10);
-      hDraw->GetYaxis()->SetRangeUser(0, 1.3);
+      hDraw->GetYaxis()->SetRangeUser(0, 1.1);
       hDraw->GetYaxis()->SetTitle("D0 yield eff");
       hDraw->GetXaxis()->SetTitle("pT (GeV)");
       hDraw->Draw();
@@ -251,9 +253,10 @@ void drawHyJets()
       hD0PtCent1sigma->Draw("same");
 
       TLatex* latex = new TLatex();
+      latex->DrawLatexNDC(0.3, 0.93, "Phase II Simulation #sqrt{s} = 5.5 TeV");
       latex->SetTextSize(0.036);
-      latex->DrawLatexNDC(0.6, 0.4, "-3 < D^{0} Rapidity < 3");
-      latex->DrawLatexNDC(0.6, 0.5, "central events");
+      latex->DrawLatexNDC(0.6, 0.28, "-3 < D^{0} Rapidity < 3");
+      latex->DrawLatexNDC(0.6, 0.2, "centrality 0 ~ 10%");
 
       TLegend *legend = new TLegend(0.7, 0.8, 0.9, 0.9);
       legend->AddEntry(hD0PtCent3sigma, "3 RMS", "l");
@@ -262,7 +265,7 @@ void drawHyJets()
       legend->Draw();
    }
 
-   TFile *f2 = new TFile("dauFrac_hyjets.root");
+   TFile *f2 = new TFile("dauFrac_hyjets_reRECO.root");
    TH1F* hMtdDau1Pt, *hMtdDau2Pt, *hMtdDau1Eta, *hMtdDau2Eta;
    TH1F* hNoMtdDau1Pt, *hNoMtdDau2Pt, *hNoMtdDau1Eta, *hNoMtdDau2Eta;
    TH2F* hPtVsEtaDau1Mtd, *hPtVsEtaDau1All;
@@ -278,7 +281,7 @@ void drawHyJets()
    f2->GetObject("hPtVsEtaDau1All", hPtVsEtaDau1All);
 
 
-   bool drawDauFrac = false;
+   bool drawDauFrac = true;
 
    if(drawDauFrac){
    TLatex* latex = new TLatex();
@@ -366,7 +369,7 @@ void drawHyJets()
    gStyle->SetOptStat(0);
 
    TH1F* hDrawDau2Eta = new TH1F("hDrawDau2Eta", "", 60, -3, 3);
-   hDrawDau2Eta->GetYaxis()->SetRangeUser(0, 1.3);
+   hDrawDau2Eta->GetYaxis()->SetRangeUser(0, 1.0);
    hDrawDau2Eta->GetYaxis()->SetTitle("Dau2 yield fraction");
    hDrawDau2Eta->GetXaxis()->SetTitle("Dau2 eta");
    hDrawDau2Eta->Draw();
