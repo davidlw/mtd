@@ -26,7 +26,7 @@ void fillLamC3PMass()
    TF1* fExpBTL = new TF1("fExpBTL_dInvBetaRMS","0.005 + 0.016*exp(-x/4.4)");
    TF1* fExpETL = new TF1("fExpETL_dInvBetaRMS","0.003 + 0.006*exp(-x/7.6)");
 
-   TFile* f1 = new TFile("matchPromptLamC3P_fullSample_reRECO.root");
+   TFile* f1 = new TFile("matchLamC3P_fullSample_reRECO.root");
    TNtuple* tp = (TNtuple*) f1->Get("LamC3P");
    matchLamC3P* t = new matchLamC3P(tp);
    std::cout << t->GetEntries() << std::endl;
