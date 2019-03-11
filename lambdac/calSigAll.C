@@ -9,8 +9,8 @@ void calSigAll()
 {
    TFile* f1 = new TFile("genPt_reRECO.root");
    TFile* f2 = new TFile("HEPData-ins1616207-v1.root");
-   TFile* f3 = new TFile("lamC3PMassHists_reRECO_all.root");
-   TFile* f4 = new TFile("hyjetsMassHists_reRECO_all.root");
+   TFile* f3 = new TFile("lamC3PMassHists_reRECO_all_vtxprob0p1.root");
+   TFile* f4 = new TFile("hyjetsMassHists_reRECO_all_vtxprob0p1.root");
 
    TH1F* hGenPt[ana::nuOfY];
    TH1F* hGenPtMidY;
@@ -122,7 +122,7 @@ void calSigAll()
       hSigMtd[ipt]->GetYaxis()->SetTitle("Significance");
       hSigMtd[ipt]->GetXaxis()->SetTitle("y");
       float max = hSigMtd[ipt]->GetMaximum();
-      hSigMtd[ipt]->GetYaxis()->SetRangeUser(0, max*1.3);
+      hSigMtd[ipt]->GetYaxis()->SetRangeUser(0, max*5.0);
       hSigMtd[ipt]->SetLineColor(kRed);
       hSigMtd[ipt]->Draw();
       hSig[ipt]->Draw("same");
@@ -137,6 +137,7 @@ void calSigAll()
       ltx->DrawLatexNDC(0.6, 0.3, Form("%.1f < p_{T} < %.1f GeV", ana::ptbin[ipt], ana::ptbin[ipt+1]));
 //      c1->SaveAs(Form("plot0309/sig_pT%.1f_%.1f.png", ana::ptbin[ipt], ana::ptbin[ipt+1]));
 
+continue;
       TCanvas* c2 = new TCanvas(Form("c2_%d", ipt), "", 600, 500);
       c2->SetLeftMargin(0.15);
       gStyle->SetOptStat(0);
@@ -179,6 +180,7 @@ void calSigAll()
       ltx->SetTextSize(0.035);
       ltx->DrawLatexNDC(0.6, 0.3, Form("%.1f < p_{T} < %.1f GeV", ana::ptbin[ipt], ana::ptbin[ipt+1]));
 //      c3->SaveAs(Form("plot0309/scaled_b_pT%.1f_%.1f.png", ana::ptbin[ipt], ana::ptbin[ipt+1]));
+      
    }
 
 

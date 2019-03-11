@@ -29,6 +29,7 @@ inline float invBetaProton(const float& p){
 
 bool passTopoCuts(HyJets* t)
 {
+//   if(t->VtxProb < 0.1) return false;
    return true;
 }
 
@@ -67,9 +68,9 @@ void fillHyJetsMass()
       const float pD2 = t->pTD2 * std::cosh(t->EtaD2);
       const float pD3 = t->pTD3 * std::cosh(t->EtaD3);
 
-      if(std::fabs(t->EtaD1) < 1.4 ? t->pTD1 <= 0.8 : pD1 <= 0.7) continue;
-      if(std::fabs(t->EtaD2) < 1.4 ? t->pTD2 <= 0.8 : pD2 <= 0.7) continue;
-      if(std::fabs(t->EtaD3) < 1.4 ? t->pTD3 <= 0.8 : pD3 <= 0.7) continue;
+      if(std::fabs(t->EtaD1) < 1.4 ? t->pTD1 <= 0.8 : (pD1 <= 0.7 || t->pTD1<0.4)) continue;
+      if(std::fabs(t->EtaD2) < 1.4 ? t->pTD2 <= 0.8 : (pD2 <= 0.7 || t->pTD1<0.4)) continue;
+      if(std::fabs(t->EtaD3) < 1.4 ? t->pTD3 <= 0.8 : (pD3 <= 0.7 || t->pTD1<0.4)) continue;
 
       const float dInvBetaCut1 = std::fabs(t->EtaD1<1.5) ? fExpBTL->Eval(pD1) : fExpETL->Eval(pD1);
       const float dInvBetaCut2 = std::fabs(t->EtaD2<1.5) ? fExpBTL->Eval(pD2) : fExpETL->Eval(pD2);
