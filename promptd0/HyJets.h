@@ -11,10 +11,11 @@
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
+#include "D0Cand.h"
 
 // Header file for the classes stored in the TChain if any.
 
-class HyJets {
+class HyJets : public D0Cand{
 public :
    TChain          *fChain;   //!pointer to the analyzed TChain or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
@@ -124,6 +125,8 @@ public :
    TBranch        *b_beta2_PV;   //!
    TBranch        *b_beta1_PVerr;   //!
    TBranch        *b_beta2_PVerr;   //!
+   TBranch        *b_isMtdDau1;   //!
+   TBranch        *b_isMtdDau2;   //!
 
    HyJets(TChain *tree=0);
    virtual ~HyJets();
@@ -134,6 +137,12 @@ public :
    virtual void     Init(TChain *tree);
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
+
+   virtual Float_t  Y(){return y;}
+   virtual Float_t  PtD1(){return pTD1;}
+   virtual Float_t  PtD2(){return pTD2;}
+   virtual Float_t  etaD1(){return EtaD1;}
+   virtual Float_t  etaD2(){return EtaD2;}
 };
 
 #endif
@@ -238,6 +247,8 @@ void HyJets::Init(TChain *tree)
    fChain->SetBranchAddress("beta2_PV", &beta2_PV, &b_beta2_PV);
    fChain->SetBranchAddress("beta1_PVerr", &beta1_PVerr, &b_beta1_PVerr);
    fChain->SetBranchAddress("beta2_PVerr", &beta2_PVerr, &b_beta2_PVerr);
+   fChain->SetBranchAddress("isMtdDau1", &isMtdDau1, &b_isMtdDau1);
+   fChain->SetBranchAddress("isMtdDau2", &isMtdDau2, &b_isMtdDau2);
    fChain->SetBranchStatus("2D*", 0);
    fChain->SetBranchStatus("3D*", 0);
    fChain->SetBranchStatus("VtxProb", 0);
