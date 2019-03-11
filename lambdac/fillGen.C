@@ -28,7 +28,7 @@ void fillGen()
    TH1F::SetDefaultSumw2(true);
 
    TChain *t = new TChain("lamc3pana_mc/genCandidateNtuple");
-   TFileCollection* fc = new TFileCollection("dum", "", "lamc3psignal.list");
+   TFileCollection* fc = new TFileCollection("dum", "", "lamc3psignal_new.list");
    t->AddFileInfoList(fc->GetList()); 
    
    std::cout << "total entries: " << t->GetEntries() << std::endl;
@@ -66,7 +66,7 @@ void fillGen()
             hPt[iy]->Fill(pT_gen);
    }
    TFile* fout;
-   fout = new TFile("genPt.root", "recreate");
+   fout = new TFile("genPt_reRECO.root", "recreate");
    for(int iy=0; iy<ana::nuOfY; iy++)
       hPt[iy]->Write();
 }

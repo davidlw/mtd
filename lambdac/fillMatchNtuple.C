@@ -32,7 +32,7 @@ void fillMatchNtuple()
     TH1F::SetDefaultSumw2(true);
 
     TChain *chain = new TChain("lamc3pana_mc/VertexCompositeNtuple");
-    TFileCollection* fc = new TFileCollection("dum", "", "lamc3psignal.list");
+    TFileCollection* fc = new TFileCollection("dum", "", "lamc3psignal_new.list");
     chain->AddFileInfoList(fc->GetList()); 
     LamC3P *t = new LamC3P(chain);
     std::cout << "total entries: " << t->GetEntries() << std::endl;
@@ -131,7 +131,7 @@ void fillMatchNtuple()
     std::cout << "counts of sigmatmtd >= 0 but fabs(eta)>3: " << isMtdWrong << std::endl;
     std::cout << "number of LamC3P passing selection: " << nLamC3P << std::endl;
     TFile* fout;
-    fout = new TFile("matchLamC3P_fullSample_test.root", "recreate");
+    fout = new TFile("matchLamC3P_fullSample_new.root", "recreate");
     ntp->Write();
     hInvBetaVsPDau1->Write();
     hInvBetaVsPDau2->Write();
